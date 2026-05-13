@@ -427,19 +427,47 @@
             document.body.classList.toggle('overflow-hidden');
         }
 
-        function handleSubmit() {
-            const btn = document.querySelector('button[onclick="handleSubmit()"]');
-            const thankYou = document.getElementById('thank-you');
-            
-            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> SAVING QUEST...';
-            btn.disabled = true;
-            
-            setTimeout(() => {
+        async function handleSubmit(event) {
+    const form = document.getElementById('quest-form');
+    const btn = form.querySelector('button');
+    const thankYou = document.getElementById('thank-you');
+
+    // Handle the submission via AJAX so the page doesn't refresh
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        
+        btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> SAVING QUEST...';
+        btn.disabled = true;
+
+        const data = new FormData(e.target);
+        
+        fetch(e.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
                 btn.style.display = 'none';
                 thankYou.classList.remove('hidden');
-            }, 1500);
-        }
+                form.reset();
+            } else {
+                alert("Oops! There was a problem submitting your quest.");
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Idea <i class="fas fa-paper-plane text-sm"></i>';
+            }
+        });
+    });
+}
 
+// Initialize the listener
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('quest-form');
+    if(form) {
+        form.addEventListener("submit", handleSubmit);
+    }
+});
         // --- GAME LOGIC ---
         const dino = document.getElementById("dino");
         const cactus = document.getElementById("cactus");
