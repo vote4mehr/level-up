@@ -342,39 +342,42 @@
     </section>
 
     <section id="feedback" class="py-24 px-4 relative">
-        <div class="max-w-4xl mx-auto glass p-8 md:p-16 rounded-[3rem] border-2 border-blue-500/10 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Drop Your Idea</h2>
-                <p class="text-slate-400">What’s your #1 quest for Pleasanton Middle School? Share it with Mehr.</p>
-            </div>
-            <div class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase text-slate-500 ml-2">Name / Nickname</label>
-                        <input type="text" placeholder="Anonymous Panther" class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase text-slate-500 ml-2">Grade Level</label>
-                        <select class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all appearance-none text-slate-400">
-                            <option>6th Grade</option>
-                            <option>7th Grade</option>
-                            <option>8th Grade</option>
-                        </select>
-                    </div>
+    <div class="max-w-4xl mx-auto glass p-8 md:p-16 rounded-[3rem] border-2 border-blue-500/10 relative z-10">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Drop Your Idea</h2>
+            <p class="text-slate-400">What’s your #1 quest for Pleasanton Middle School? Share it with Mehr.</p>
+        </div>
+        
+        <form id="quest-form" action="https://formspree.io/f/mehrkaurtoor@gmail.com" method="POST" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-slate-500 ml-2">Name / Nickname</label>
+                    <input type="text" name="name" placeholder="Anonymous Panther" required class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all">
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase text-slate-500 ml-2">The Idea</label>
-                    <textarea rows="4" placeholder="I want to see more..." class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all"></textarea>
-                </div>
-                <button onclick="handleSubmit()" class="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest flex items-center justify-center gap-3">
-                    Submit Idea <i class="fas fa-paper-plane text-sm"></i>
-                </button>
-                <div id="thank-you" class="hidden text-center text-green-400 font-bold p-6 bg-green-500/10 rounded-2xl border border-green-500/20 animate-pulse">
-                    Success! Quest Log Updated. Let's go PMS! 🐾
+                    <label class="text-xs font-bold uppercase text-slate-500 ml-2">Grade Level</label>
+                    <select name="grade" class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all appearance-none text-slate-400">
+                        <option>6th Grade</option>
+                        <option>7th Grade</option>
+                        <option>8th Grade</option>
+                    </select>
                 </div>
             </div>
-        </div>
-    </section>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase text-slate-500 ml-2">The Idea</label>
+                <textarea name="message" rows="4" required placeholder="I want to see more..." class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all"></textarea>
+            </div>
+            
+            <button type="submit" class="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest flex items-center justify-center gap-3">
+                Submit Idea <i class="fas fa-paper-plane text-sm"></i>
+            </button>
+            
+            <div id="thank-you" class="hidden text-center text-green-400 font-bold p-6 bg-green-500/10 rounded-2xl border border-green-500/20 animate-pulse">
+                Success! Quest Log Updated. Let's go PMS! 🐾
+            </div>
+        </form>
+    </div>
+</section>
 
     <section id="vote" class="py-24 px-4 text-center">
         <div class="max-w-4xl mx-auto">
