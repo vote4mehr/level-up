@@ -341,7 +341,7 @@
         </div>
     </section>
 
-    <section id="feedback" class="py-24 px-4 relative">
+   <section id="feedback" class="py-24 px-4 relative">
     <div class="max-w-4xl mx-auto glass p-8 md:p-16 rounded-[3rem] border-2 border-blue-500/10 relative z-10">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Drop Your Idea</h2>
@@ -368,7 +368,7 @@
                 <textarea name="message" rows="4" required placeholder="I want to see more..." class="w-full bg-slate-900/50 border border-white/10 p-4 rounded-2xl focus:border-blue-500 focus:outline-none transition-all"></textarea>
             </div>
             
-            <button type="submit" class="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest flex items-center justify-center gap-3">
+            <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest flex items-center justify-center gap-3">
                 Submit Idea <i class="fas fa-paper-plane text-sm"></i>
             </button>
             
@@ -423,54 +423,70 @@
         </div>
     </footer>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
+<script>
+    // Navigation Toggle
+    function toggleMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+    }
+
+    // Handle Form Submission to Email
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('quest-form');
+        const btn = document.getElementById('submit-btn');
+        const thankYou = document.getElementById('thank-you');
+
+        if (form) {
+            form.addEventListener("submit", async function(e) {
+                e.preventDefault(); // Prevents page reload
+                
+                // Visual feedback
+                btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> SAVING QUEST...';
+                btn.disabled = true;
+
+                const data = new FormData(form);
+                
+                // Send to Formspree
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: data,
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        form.style.display = 'none'; // Hide form on success
+                        thankYou.classList.remove('hidden');
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (error) {
+                    alert("Oops! There was a problem submitting your idea.");
+                    btn.disabled = false;
+                    btn.innerHTML = 'Submit Idea <i class="fas fa-paper-plane text-sm"></i>';
+                }
+            });
         }
 
-        async function handleSubmit(event) {
-    const form = document.getElementById('quest-form');
-    const btn = form.querySelector('button');
-    const thankYou = document.getElementById('thank-you');
+        // --- Intersection Observer for animations ---
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-    // Handle the submission via AJAX so the page doesn't refresh
-    form.addEventListener("submit", async function(e) {
-        e.preventDefault();
-        
-        btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> SAVING QUEST...';
-        btn.disabled = true;
-
-        const data = new FormData(e.target);
-        
-        fetch(e.target.action, {
-            method: form.method,
-            body: data,
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                btn.style.display = 'none';
-                thankYou.classList.remove('hidden');
-                form.reset();
-            } else {
-                alert("Oops! There was a problem submitting your quest.");
-                btn.disabled = false;
-                btn.innerHTML = 'Submit Idea <i class="fas fa-paper-plane text-sm"></i>';
-            }
+        document.querySelectorAll('.quest-card').forEach(card => {
+            card.classList.add('opacity-0', 'transition-all', 'duration-700');
+            card.style.transform = 'translateY(30px)';
+            observer.observe(card);
         });
     });
-}
 
-// Initialize the listener
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('quest-form');
-    if(form) {
-        form.addEventListener("submit", handleSubmit);
-    }
-});
         // --- GAME LOGIC ---
         const dino = document.getElementById("dino");
         const cactus = document.getElementById("cactus");
